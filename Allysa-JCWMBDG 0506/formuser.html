@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, th, td{
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px 20px 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>FORM USERS</h1><br><br>
+        <form>
+            <input type="text" id="username" placeholder="username">
+            <input type="text" id="email" placeholder="email">
+            <select id="role">
+                <option value="admin">Admin</option>
+                <option value="admin">User</option>
+            </select><br><br>
+            <input type="button" value="Add User" onclick="onBtnAdd()">
+        </form>
+
+        <h1>USERS DATA</h1>
+        <table>
+            <thead>
+                <th>No</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+            </thead>
+            <tbody id="print-data">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+<script>
+
+    let data = []
+
+    function onBtnAdd(){
+        let username = document.getElementById("username").value
+        let email = document.getElementById("email").value
+        let role = document.getElementById("role").value
+        if(username == ""|| email == ""){
+            alert("Input masih kosong!")
+        } else {
+            data.push({username, email, role})
+            printData()
+            // console.log(data)
+        }
+
+        
+    }
+
+    function printData(indexEdit){
+        let hasil = ""
+
+        data.forEach((a,i) =>{
+            if(indexEdit === i){
+                hasil += `
+                <tr>
+                    <td>${i+1}</td>
+                    <td><input type="text" value="${a.username}" id="newUsername"></td>
+                    <td><input type="text" value="${a.email}" id="newEmail"></td>
+                    <td>
+                        <select id="newRole">
+                            ${GenerateOption(a.role)}
+                        </select>
+                    </td>
+                    <td><input type="button" value="Save" onclick="onBtnSave(${i})">
+                    <input type="button" value = "Cancel" onclick="onBtnCancel(${i})"></td>
+                </tr>` 
+            } else {
+                hasil += `
+                <tr>
+                    <td>${i+1}</td>
+                    <td>${a.username}</td>
+                    <td >${a.email}</td>
+                    <td>${a.role}</td>
+                    <td><input type="button" value="edit" onclick="onBtnEdit(${i})">
+                    <input type="button" value = "delete" onclick="onBtnDelete(${i})"></td>
+                </tr>` 
+        }
+        })
+
+        document.getElementById("print-data").innerHTML = hasil
+    }
+
+    function GenerateOption (value) {
+            let kategori = ["Admin", "User"]
+            return kategori.map(item => {
+                if (item === value) {
+                    return `<option selected>${item}</option>`
+                } else {
+                    return `<option>${item}</option>`
+                }
+            })
+            
+    }
+
+    function onBtnDelete(i){
+        data.splice(i,1)
+        printData()
+    }
+
+    function onBtnEdit(i){
+        printData(i)
+    }
+
+    function onBtnSave(i){
+        data[i].username = document.getElementById("newUsername").value
+        data[i].email = document.getElementById("newEmail").value
+        data[i].role= document.getElementById("newRole").value
+
+        console.table(data)
+        printData()
+    }
+
+    function onBtnCancel(){
+        // alert("Cancel?")
+        printData(i)
+    }
+</script>
