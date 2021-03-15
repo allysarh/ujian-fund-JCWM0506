@@ -65,8 +65,12 @@
                 }
                 return a
             })
-            dataBaru.splice(n*2+2, 2, "L")
-            document.getElementById("print-pattern").innerHTML = dataBaru.join("")
+            if(n == 3){
+                dataBaru.splice(n*2+2, 2, "L")
+                document.getElementById("print-pattern").innerHTML = dataBaru.join("")
+            } else {
+                document.getElementById("print-pattern").innerHTML = dataBaru.join("")
+            }
         } else {
             alert("Masukkan input lebih dari 0 dan kurang dari 4 !")
         }
